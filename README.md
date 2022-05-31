@@ -23,21 +23,12 @@ import (
 )
 
 func main(t *testing.T) {
-	password := "the-real-password"
-	// generate a hash
-	hash, err := Generate(password)
-	if err != nil {
-		log.Panic("Failed to generate hash")
+	loadConfig := func() {
+		panic("load config panic")
 	}
 
-	// compare hash with password
-	isValid, err := Compare(hash, password)
-	if err != nil {
-		log.Panic("Failed to compare hash")
-	}
-
-	if !isValid {
-		log.Panic("Hash is not valid")
+	if err := safe.Do(loadConfig); err != nil {
+		log.Error(err)
 	}
 }
 ```
