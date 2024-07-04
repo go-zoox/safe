@@ -3,6 +3,7 @@ package safe
 import (
 	"fmt"
 
+	goerrors "github.com/go-errors/errors"
 	"github.com/go-zoox/errors"
 )
 
@@ -14,7 +15,8 @@ func Do(fn func() error) (err error) {
 			case string:
 				err = errors.New(v)
 			case error:
-				err = v
+				ge := goerrors.Wrap(v, 3)
+				err = fmt.Errorf("%s\n\n%s", ge.Error(), ge.Stack())
 			default:
 				err = fmt.Errorf("%#v", v)
 			}
